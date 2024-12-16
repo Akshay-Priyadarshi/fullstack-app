@@ -1,0 +1,7 @@
+{
+  "semi": true,
+  "singleAttributePerLine": true,
+  "singleQuote": false,
+  "trailingComma": "none",
+  "tabWidth": 2
+}

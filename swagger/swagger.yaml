@@ -1,0 +1,118 @@
+basePath: /
+definitions:
+  dtos.AuthenticationLoginRequestData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dtos.AuthenticationLoginResponseData:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      token:
+        type: string
+    type: object
+  dtos.AuthenticationRegisterRequestData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dtos.AuthenticationRegisterResponseData:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      token:
+        type: string
+    type: object
+  swagger.AuthenticationLoginApiResponse:
+    properties:
+      additionalInfo:
+        additionalProperties: true
+        type: object
+      data:
+        $ref: '#/definitions/dtos.AuthenticationLoginResponseData'
+      message:
+        type: string
+      statusCode:
+        type: integer
+      success:
+        type: boolean
+    type: object
+  swagger.AuthenticationRegisterApiResponse:
+    properties:
+      additionalInfo:
+        additionalProperties: true
+        type: object
+      data:
+        $ref: '#/definitions/dtos.AuthenticationRegisterResponseData'
+      message:
+        type: string
+      statusCode:
+        type: integer
+      success:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a template for a RESTful API using Fiber.
+  title: Api Template
+  version: "1.0"
+paths:
+  /authentication/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user
+      parameters:
+      - description: User login details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AuthenticationLoginRequestData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.AuthenticationLoginApiResponse'
+      summary: Login a user
+      tags:
+      - Authentication
+  /authentication/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User registration details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.AuthenticationRegisterRequestData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagger.AuthenticationRegisterApiResponse'
+      summary: Register a new user
+      tags:
+      - Authentication
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"
