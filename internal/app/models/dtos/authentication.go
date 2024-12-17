@@ -1,8 +1,8 @@
 package dtos
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/services"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
@@ -19,7 +19,7 @@ func (data *AuthenticationRegisterRequestData) Validate() error {
 }
 
 func (data *AuthenticationRegisterRequestData) ToUser() *models.User {
-	passwordHash, err := services.HashPassword(data.Password)
+	passwordHash, err := passwords.HashPassword(data.Password)
 	if err != nil {
 		panic(err)
 	}
@@ -36,6 +36,14 @@ type AuthenticationRegisterResponseData struct {
 	Token string    `json:"token"`
 }
 
+type AuthenticationRegisterApiResponse struct {
+	Success        bool                                `json:"success"`
+	Message        string                              `json:"message"`
+	Data           *AuthenticationRegisterResponseData `json:"data"`
+	StatusCode     int                                 `json:"statusCode"`
+	AdditionalInfo *map[string]interface{}             `json:"additionalInfo"`
+}
+
 // Login
 type AuthenticationLoginRequestData struct {
 	Email    string `json:"email"`
@@ -46,4 +54,12 @@ type AuthenticationLoginResponseData struct {
 	Id    uuid.UUID `json:"id"`
 	Email string    `json:"email"`
 	Token string    `json:"token"`
+}
+
+type AuthenticationLoginApiResponse struct {
+	Success        bool                             `json:"success"`
+	Message        string                           `json:"message"`
+	Data           *AuthenticationLoginResponseData `json:"data"`
+	StatusCode     int                              `json:"statusCode"`
+	AdditionalInfo *map[string]interface{}          `json:"additionalInfo"`
 }

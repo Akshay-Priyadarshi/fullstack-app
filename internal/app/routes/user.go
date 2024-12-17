@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/handlers"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/handlers"
 	"github.com/gofiber/fiber/v2"
 )
 

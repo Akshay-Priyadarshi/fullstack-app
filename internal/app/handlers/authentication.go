@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models/dtos"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models/dtos"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param user body dtos.AuthenticationRegisterRequestData true "User registration details"
-// @Success 200 {object} swagger.AuthenticationRegisterApiResponse
+// @Success 200 {object} dtos.AuthenticationRegisterApiResponse
 // @Router /authentication/register [post]
 func RegisterHandler(c *fiber.Ctx) error {
 	// Create a registerRequestDto to parse the incoming JSON body
@@ -51,7 +51,7 @@ func RegisterHandler(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param user body dtos.AuthenticationLoginRequestData true "User login details"
-// @Success 200 {object} swagger.AuthenticationLoginApiResponse
+// @Success 200 {object} dtos.AuthenticationLoginApiResponse
 // @Router /authentication/login [post]
 func LoginHandler(c *fiber.Ctx) error {
 	// Return login route string

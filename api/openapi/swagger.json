@@ -43,7 +43,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagger.AuthenticationLoginApiResponse"
+                            "$ref": "#/definitions/dtos.AuthenticationLoginApiResponse"
                         }
                     }
                 }
@@ -77,7 +77,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagger.AuthenticationRegisterApiResponse"
+                            "$ref": "#/definitions/dtos.AuthenticationRegisterApiResponse"
                         }
                     }
                 }
@@ -85,6 +85,27 @@
         }
     },
     "definitions": {
+        "dtos.AuthenticationLoginApiResponse": {
+            "type": "object",
+            "properties": {
+                "additionalInfo": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "data": {
+                    "$ref": "#/definitions/dtos.AuthenticationLoginResponseData"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dtos.AuthenticationLoginRequestData": {
             "type": "object",
             "properties": {
@@ -110,6 +131,27 @@
                 }
             }
         },
+        "dtos.AuthenticationRegisterApiResponse": {
+            "type": "object",
+            "properties": {
+                "additionalInfo": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "data": {
+                    "$ref": "#/definitions/dtos.AuthenticationRegisterResponseData"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dtos.AuthenticationRegisterRequestData": {
             "type": "object",
             "properties": {
@@ -132,48 +174,6 @@
                 },
                 "token": {
                     "type": "string"
-                }
-            }
-        },
-        "swagger.AuthenticationLoginApiResponse": {
-            "type": "object",
-            "properties": {
-                "additionalInfo": {
-                    "type": "object",
-                    "additionalProperties": true
-                },
-                "data": {
-                    "$ref": "#/definitions/dtos.AuthenticationLoginResponseData"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "statusCode": {
-                    "type": "integer"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "swagger.AuthenticationRegisterApiResponse": {
-            "type": "object",
-            "properties": {
-                "additionalInfo": {
-                    "type": "object",
-                    "additionalProperties": true
-                },
-                "data": {
-                    "$ref": "#/definitions/dtos.AuthenticationRegisterResponseData"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "statusCode": {
-                    "type": "integer"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             }
         }
