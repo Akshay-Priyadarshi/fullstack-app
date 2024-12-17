@@ -1,5 +1,19 @@
 basePath: /
 definitions:
+  dtos.AuthenticationLoginApiResponse:
+    properties:
+      additionalInfo:
+        additionalProperties: true
+        type: object
+      data:
+        $ref: '#/definitions/dtos.AuthenticationLoginResponseData'
+      message:
+        type: string
+      statusCode:
+        type: integer
+      success:
+        type: boolean
+    type: object
   dtos.AuthenticationLoginRequestData:
     properties:
       email:
@@ -16,6 +30,20 @@ definitions:
       token:
         type: string
     type: object
+  dtos.AuthenticationRegisterApiResponse:
+    properties:
+      additionalInfo:
+        additionalProperties: true
+        type: object
+      data:
+        $ref: '#/definitions/dtos.AuthenticationRegisterResponseData'
+      message:
+        type: string
+      statusCode:
+        type: integer
+      success:
+        type: boolean
+    type: object
   dtos.AuthenticationRegisterRequestData:
     properties:
       email:
@@ -31,34 +59,6 @@ definitions:
         type: string
       token:
         type: string
-    type: object
-  swagger.AuthenticationLoginApiResponse:
-    properties:
-      additionalInfo:
-        additionalProperties: true
-        type: object
-      data:
-        $ref: '#/definitions/dtos.AuthenticationLoginResponseData'
-      message:
-        type: string
-      statusCode:
-        type: integer
-      success:
-        type: boolean
-    type: object
-  swagger.AuthenticationRegisterApiResponse:
-    properties:
-      additionalInfo:
-        additionalProperties: true
-        type: object
-      data:
-        $ref: '#/definitions/dtos.AuthenticationRegisterResponseData'
-      message:
-        type: string
-      statusCode:
-        type: integer
-      success:
-        type: boolean
     type: object
 host: localhost:8080
 info:
@@ -85,7 +85,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagger.AuthenticationLoginApiResponse'
+            $ref: '#/definitions/dtos.AuthenticationLoginApiResponse'
       summary: Login a user
       tags:
       - Authentication
@@ -107,7 +107,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagger.AuthenticationRegisterApiResponse'
+            $ref: '#/definitions/dtos.AuthenticationRegisterApiResponse'
       summary: Register a new user
       tags:
       - Authentication

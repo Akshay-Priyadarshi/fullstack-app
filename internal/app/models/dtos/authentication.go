@@ -36,6 +36,14 @@ type AuthenticationRegisterResponseData struct {
 	Token string    `json:"token"`
 }
 
+type AuthenticationRegisterApiResponse struct {
+	Success        bool                                `json:"success"`
+	Message        string                              `json:"message"`
+	Data           *AuthenticationRegisterResponseData `json:"data"`
+	StatusCode     int                                 `json:"statusCode"`
+	AdditionalInfo *map[string]interface{}             `json:"additionalInfo"`
+}
+
 // Login
 type AuthenticationLoginRequestData struct {
 	Email    string `json:"email"`
@@ -46,4 +54,12 @@ type AuthenticationLoginResponseData struct {
 	Id    uuid.UUID `json:"id"`
 	Email string    `json:"email"`
 	Token string    `json:"token"`
+}
+
+type AuthenticationLoginApiResponse struct {
+	Success        bool                             `json:"success"`
+	Message        string                           `json:"message"`
+	Data           *AuthenticationLoginResponseData `json:"data"`
+	StatusCode     int                              `json:"statusCode"`
+	AdditionalInfo *map[string]interface{}          `json:"additionalInfo"`
 }
