@@ -57,7 +57,7 @@ export const LanguageSelector = () => {
         }
       >
         <SelectTrigger
-          className="w-26"
+          className="w-28"
           data-testid="language-selector-trigger"
         >
           <SelectValue placeholder="Language" />
