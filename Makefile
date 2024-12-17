@@ -25,13 +25,13 @@ dev: swagger
 # ------------------------------------------------------------------------------------------
 ### Build for all the platforms ###
 build: swagger
-	GOARCH=amd64 GOOS=darwin go build -o ./out/${BINARY_NAME}-darwin cmd/api/main.go
-	GOARCH=amd64 GOOS=linux go build -o ./out/${BINARY_NAME}-linux cmd/api/main.go
-	GOARCH=amd64 GOOS=windows go build -o ./out/${BINARY_NAME}-windows cmd/api/main.go
+	GOARCH=amd64 GOOS=darwin go build -o ./dist/${BINARY_NAME}-darwin cmd/api/main.go
+	GOARCH=amd64 GOOS=linux go build -o ./dist/${BINARY_NAME}-linux cmd/api/main.go
+	GOARCH=amd64 GOOS=windows go build -o ./dist/${BINARY_NAME}-windows cmd/api/main.go
 
 ### Run binary for current platform ###
 run: build
-	./out/${BINARY_NAME}-darwin
+	./dist/${BINARY_NAME}-darwin
 
 ### Clean all generated binaries ###
 clean:
@@ -48,4 +48,3 @@ coverage:
 	go test ./... -coverprofile=coverage.out
 
 # ------------------------------------------------------------------------------------------
-
