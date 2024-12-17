@@ -8,6 +8,8 @@ import {
   DialogTrigger,
   Input
 } from "@ui";
+import { Typography } from "../Typography";
+import { useTranslation } from "react-i18next";
 
 type SignupFormInputs = {
   email: string;
@@ -15,12 +17,15 @@ type SignupFormInputs = {
 };
 
 export const SignupDialog = () => {
+  const { t } = useTranslation();
   const { register, handleSubmit } = useForm<SignupFormInputs>();
   const onLoginFormSubmit: SubmitHandler<SignupFormInputs> = () => {};
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>Signup</Button>
+        <Button>
+          <Typography>{t("menuitems.signup")}</Typography>
+        </Button>
       </DialogTrigger>
       <DialogContent className="p-8">
         <DialogHeader>

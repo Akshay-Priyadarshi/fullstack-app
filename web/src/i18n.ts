@@ -5,7 +5,6 @@ import en from "./assets/translation/en.json";
 import hi from "./assets/translation/hi.json";
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
-  debug: true,
   lng: "en",
   resources: {
     en,

@@ -1,4 +1,4 @@
-import { AppLanguages } from "@constants";
+import { AppLanguages } from "@enums";
 import {
   Select,
   SelectContent,
@@ -6,26 +6,46 @@ import {
   SelectTrigger,
   SelectValue
 } from "@ui";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { Typography } from "../Typography";
 
 export const LanguageSelector = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  const changeLanguage = (langKey: string) => {
-    i18n.changeLanguage(langKey);
-  };
-
-  const languageSelectOptions = Object.keys(AppLanguages).map(
+  const changeLanguage = useCallback(
     (langKey: string) => {
-      return (
-        <SelectItem
-          key={langKey}
-          value={langKey}
-        >
-          {AppLanguages[langKey]}
-        </SelectItem>
-      );
-    }
+      i18n.changeLanguage(langKey);
+    },
+    [i18n]
+  );
+
+  const languageLabels = useMemo(() => {
+    return {
+      [AppLanguages.en]: t("languages.english"),
+      [AppLanguages.hi]: t("languages.hindi")
+    } as Record<AppLanguages, string>;
+  }, [t]);
+
+  const languageSelectOptions = useMemo(
+    () =>
+      Object.keys(AppLanguages).map((langKey: string) => {
+        return (
+          <SelectItem
+            key={langKey}
+            value={langKey}
+          >
+            <Typography>
+              {
+                languageLabels[
+                  AppLanguages[langKey as keyof typeof AppLanguages]
+                ]
+              }
+            </Typography>
+          </SelectItem>
+        );
+      }),
+    [languageLabels]
   );
 
   return (
@@ -37,7 +57,7 @@ export const LanguageSelector = () => {
         }
       >
         <SelectTrigger
-          className="w-24"
+          className="w-28"
           data-testid="language-selector-trigger"
         >
           <SelectValue placeholder="Language" />

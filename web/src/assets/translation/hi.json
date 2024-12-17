@@ -1,6 +1,15 @@
 {
   "translation": {
-    "greeting": "हैलो सभी को",
-    "home": "घर"
+    "greeting": "नमस्ते दुनिया",
+    "menuitems": {
+      "about": "जानें",
+      "dashboard": "डैशबोर्ड",
+      "login": "लॉगिन",
+      "signup": "पंजीकरण"
+    },
+    "languages": {
+      "english": "अंग्रेज़ी",
+      "hindi": "हिन्दी"
+    }
   }
 }
