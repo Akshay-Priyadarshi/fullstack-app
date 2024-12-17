@@ -3,7 +3,7 @@ package handlers
 import (
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models/dtos"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/services"
+	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -19,7 +19,7 @@ func UserPasswordUpdateHandler(c *fiber.Ctx) error {
 		return models.NewApiError(err.Error(), fiber.StatusBadRequest, nil)
 	}
 
-	hash, _ := services.HashPassword("password")
+	hash, _ := passwords.HashPassword("password")
 	loggedInUser := models.User{
 		Identity: models.Identity[uuid.UUID]{Id: uuid.New()},
 		Email:    "akshay@gmail.com",

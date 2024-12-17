@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/services"
+	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
 	"github.com/google/uuid"
 )
 
@@ -18,10 +18,10 @@ func (u *User) UpdateEmail(updatedEmail string) {
 }
 
 func (u *User) UpdatePassword(oldPassword string, newPassword string) error {
-	if err := services.ComparePassword(oldPassword, u.Password); err != nil {
+	if err := passwords.ComparePassword(oldPassword, u.Password); err != nil {
 		return errors.New("old password is incorrect")
 	}
-	newHashedPassword, err := services.HashPassword(newPassword)
+	newHashedPassword, err := passwords.HashPassword(newPassword)
 	if err != nil {
 		return err
 	}
