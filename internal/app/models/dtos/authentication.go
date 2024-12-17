@@ -1,7 +1,7 @@
 package dtos
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
 	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"

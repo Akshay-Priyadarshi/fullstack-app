@@ -1,7 +1,7 @@
 package swagger
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models/dtos"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models/dtos"
 )
 
 // Register

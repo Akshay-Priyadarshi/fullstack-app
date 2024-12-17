@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 
 	_ "github.com/Akshay-Priyadarshi/fullstack-app/api/openapi"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/handlers"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/routes"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/handlers"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/routes"
 	"github.com/Akshay-Priyadarshi/fullstack-app/web"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

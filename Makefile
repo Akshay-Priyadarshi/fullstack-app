@@ -14,9 +14,9 @@ vet:
 	go vet ./...
 
 # ------------------------------------------------------------------------------------------
-### Generate swagger docs for the api ###
+### Generate swagger docs for the app ###
 swagger: deps
-	swag init -g main.go -o api/openapi -d cmd/api,internal/api/handlers,internal/api/models,internal/api/models/dtos
+	swag init -g main.go -o api/openapi -d cmd/app,internal/app/handlers,internal/app/models,internal/app/models/dtos
 
 ### Run in development mode ###
 dev: swagger
@@ -25,9 +25,9 @@ dev: swagger
 # ------------------------------------------------------------------------------------------
 ### Build for all the platforms ###
 build: swagger
-	GOARCH=amd64 GOOS=darwin go build -o ./dist/${BINARY_NAME}-darwin cmd/api/main.go
-	GOARCH=amd64 GOOS=linux go build -o ./dist/${BINARY_NAME}-linux cmd/api/main.go
-	GOARCH=amd64 GOOS=windows go build -o ./dist/${BINARY_NAME}-windows cmd/api/main.go
+	GOARCH=amd64 GOOS=darwin go build -o ./dist/${BINARY_NAME}-darwin cmd/app/main.go
+	GOARCH=amd64 GOOS=linux go build -o ./dist/${BINARY_NAME}-linux cmd/app/main.go
+	GOARCH=amd64 GOOS=windows go build -o ./dist/${BINARY_NAME}-windows cmd/app/main.go
 
 ### Run binary for current platform ###
 run: build

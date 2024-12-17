@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/models/dtos"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models/dtos"
 	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
