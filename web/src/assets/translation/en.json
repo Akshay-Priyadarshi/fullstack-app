@@ -1,6 +1,15 @@
 {
   "translation": {
     "greeting": "hello world",
-    "home": "home"
+    "menuitems": {
+      "about": "about",
+      "dashboard": "dashboard",
+      "login": "login",
+      "signup": "signup"
+    },
+    "languages": {
+      "english": "english",
+      "hindi": "hindi"
+    }
   }
 }

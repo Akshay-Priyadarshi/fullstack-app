@@ -5,3 +5,4 @@ export * from "./Error";
 export * from "./LoginDialog";
 export * from "./SignupDialog";
 export * from "./LanguageSelector";
+export * from "./Typography";
