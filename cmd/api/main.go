@@ -3,10 +3,10 @@ package main
 import (
 	"encoding/json"
 
-	"github.com/Akshay-Priyadarshi/fullstack-app/client"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/handlers"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/routes"
 	_ "github.com/Akshay-Priyadarshi/fullstack-app/swagger"
+	"github.com/Akshay-Priyadarshi/fullstack-app/web"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/healthcheck"
@@ -55,7 +55,7 @@ func main() {
 
 	routes.RegisterRootRoutes(app)
 
-	client.RegisterClientRoutes(app)
+	web.RegisterClientRoutes(app)
 
 	port := "8080"
 	println("Server is starting at: http://localhost:" + port)

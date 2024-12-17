@@ -7,7 +7,7 @@ BINARY_NAME=fullstack-app
 # ------------------------------------------------------------------------------------------
 ### Install all go dependencies ###
 deps:
-	go mod download && cd client && pnpm install
+	go mod download && cd web && pnpm install
 
 ### Update all go dependencies ###
 vet:
@@ -20,7 +20,7 @@ swagger: deps
 
 ### Run in development mode ###
 dev: swagger
-	cd client && pnpm dev & air && fg
+	cd web && pnpm dev & air && fg
 
 # ------------------------------------------------------------------------------------------
 ### Build for all the platforms ###
