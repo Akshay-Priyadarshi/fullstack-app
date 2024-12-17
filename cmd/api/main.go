@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 
+	_ "github.com/Akshay-Priyadarshi/fullstack-app/api/openapi"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/handlers"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/api/routes"
-	_ "github.com/Akshay-Priyadarshi/fullstack-app/swagger"
 	"github.com/Akshay-Priyadarshi/fullstack-app/web"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"

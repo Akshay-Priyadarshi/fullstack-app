@@ -16,7 +16,7 @@ vet:
 # ------------------------------------------------------------------------------------------
 ### Generate swagger docs for the api ###
 swagger: deps
-	swag init -g main.go -o swagger -d cmd/api,internal/api/handlers,internal/api/models,internal/api/models/dtos
+	swag init -g main.go -o api/openapi -d cmd/api,internal/api/handlers,internal/api/models,internal/api/models/dtos
 
 ### Run in development mode ###
 dev: swagger
