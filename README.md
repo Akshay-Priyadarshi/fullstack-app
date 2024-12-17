@@ -1,6 +1,6 @@
 # Fullstack App
 
-This repository contains a **full-stack** application, built with **Go** for the **API layer** and **React** for **Interactive layer**. This makes deployment and maintenance straightforward.
+This repository contains a **full-stack** application, built with [**Go**](https://go.dev/) for the **API layer** and [**React**](https://react.dev/) for **Client layer**.
 
 ## Table of Contents
 
@@ -20,21 +20,39 @@ This repository contains a **full-stack** application, built with **Go** for the
 
 ## Project Overview
 
-This project integrates a **Go** backend with an **embedded React client**. The React client is bundled and served directly by the Go application, which simplifies deployment. The backend provides an API, which is handled through Go’s Fiber package, while the React frontend handles the UI/UX.
+This repository contains a **full-stack** application, built with [**Go**](https://go.dev/) for the **API layer** and [**React**](https://react.dev/) for **Client layer**. This makes deployment and maintenance straightforward. This repository also follows the **best practices** for Go and React applications. Apart from that this follows the [**Golang standards for project layout**](https://github.com/golang-standards/project-layout). Treat this as a starting point and further extend it to suit your needs.
 
--   **API**: Go (with Fiber)
--   **Client**: Go (with embedded React)
+### Features & Highlights
 
-### Features
+-   **Go API**:
 
--   Serve both API and frontend from a single binary.
--   Integrated Swagger API documentation.
--   Development server with hot reload.
--   Cross-platform support (Linux, macOS, Windows).
+    -   [**Fiber**](https://gofiber.io/) - Web framework.
+    -   [**Air**](https://github.com/air-verse/air) - Live reload for Go apps.
+    -   [**Swagger**](https://swagger.io/specification/) - API documentation.
+    -   [**Make**](https://www.gnu.org/software/make/manual/make.html) - Build automation.
+
+-   **React Client**:
+
+    -   [**Vite**](https://vite.dev/) - Frontend build tool.
+    -   [**React Router**](https://reactrouter.com/) - Routing.
+    -   [**Tailwind CSS**](https://tailwindcss.com/) - Utility-first CSS framework.
+    -   [**Axios**](https://axios-http.com/) - HTTP client.
+    -   [**Tanstack Query**](https://tanstack.com/query/v3/) - Data fetching library.
+    -   [**Storybook**](https://storybook.js.org/) - For showcasing components.
+    -   [**EsBuild**](https://esbuild.github.io/) - For production builds.
+    -   [**ShadCN UI**](https://ui.shadcn.com/) -Component library.
+    -   [**Vitest**](https://vitest.dev/) - Testing framework.
+    -   [**Cypress**](https://www.cypress.io/) - End-to-end testing.
+    -   [**pnpm**](https://pnpm.io/) - Package manager.
+
+-   **Fullstack**
+
+    -   **Concurrent Development** - Run both the API and the React app concurrently.
+    -   **Production Build** - Build a single executable for the API and the React app.
 
 ## Installation
 
-Ensure you have **Go** and **Node.js** installed on your machine. If you don't have them, you can follow the installation guides for Go and Node.js.
+Ensure you have **Go** and [**Node.js**](https://nodejs.org/en) installed on your machine. If you don't have them, you can follow the installation guides for [Go Installation](https://go.dev/doc/install) and [Node.js Installation](https://nodejs.org/en/download/package-manager).
 
 1. Clone the repository:
 
@@ -113,7 +131,7 @@ make run
 
 ### Test the Application
 
-Run tests for the Go API:
+Run tests for the Go API and the React client:
 
 ```bash
 make test
