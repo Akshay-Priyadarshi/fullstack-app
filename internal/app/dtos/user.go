@@ -2,17 +2,17 @@ package dtos
 
 import "github.com/go-playground/validator/v10"
 
-type UserPasswordUpdateRequestData struct {
+type UserPasswordUpdateReqData struct {
 	OldPassword string `json:"oldPassword" validate:"required"`
 	NewPassword string `json:"newPassword" validate:"required"`
 }
 
-func (data *UserPasswordUpdateRequestData) Validate() error {
+func (data *UserPasswordUpdateReqData) Validate() error {
 	validate := validator.New()
 	return validate.Struct(data)
 }
 
-type UserResponseData struct {
+type UserResData struct {
 	Id    string `json:"id"`
 	Email string `json:"email"`
 }
