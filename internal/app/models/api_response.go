@@ -1,5 +1,7 @@
 package models
 
+import "github.com/gofiber/fiber/v2"
+
 type ApiResponse[Data interface{}] struct {
 	Success        bool                    `json:"success"`
 	Message        string                  `json:"message"`
@@ -21,4 +23,8 @@ func NewApiResponse[Data interface{}](message string, statusCode int, data *Data
 		StatusCode:     statusCode,
 		AdditionalInfo: additionalInfo,
 	}
+}
+
+func OkApiResponse[Data interface{}](message string, data *Data) ApiResponse[Data] {
+	return NewApiResponse(message, fiber.StatusOK, data, &map[string]interface{}{})
 }

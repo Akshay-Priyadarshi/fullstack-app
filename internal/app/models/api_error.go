@@ -1,5 +1,7 @@
 package models
 
+import "github.com/gofiber/fiber/v2"
+
 type ApiError struct {
 	Message        string                  `json:"message"`
 	StatusCode     int                     `json:"statusCode"`
@@ -31,4 +33,8 @@ func NewApiError(message string, statusCode int, additionalInfo *map[string]inte
 		StatusCode:     statusCode,
 		AdditionalInfo: additionalInfo,
 	}
+}
+
+func New400ApiError(message string) *ApiError {
+	return NewApiError(message, fiber.StatusBadRequest, nil)
 }

@@ -3,7 +3,7 @@ package models
 import (
 	"errors"
 
-	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/pkg/passwords"
 	"github.com/google/uuid"
 )
 
@@ -11,6 +11,7 @@ type User struct {
 	Identity[uuid.UUID]
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	TimeStamps
 }
 
 func (u *User) UpdateEmail(updatedEmail string) {
