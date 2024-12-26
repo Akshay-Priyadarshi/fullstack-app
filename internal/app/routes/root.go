@@ -2,15 +2,21 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/healthcheck"
 )
 
-func RegisterRootRoutes(app *fiber.App) {
-	rootGroup := app.Group("/api")
+func RegisterRoutes(app *fiber.App, path string) {
+	rootGroup := app.Group(path)
 
-	RegisterAuthRoutes(rootGroup)
-	RegisterUserRoutes(rootGroup)
+	rootGroup.Use(healthcheck.New(healthcheck.Config{
+		LivenessEndpoint:  "/live",
+		ReadinessEndpoint: "/ready",
+	}))
 
-	rootGroup.All("/*", func(c *fiber.Ctx) error {
+	RegisterAuthRoutes(rootGroup, "/auth")
+	RegisterUserRoutes(rootGroup, "/users")
+
+	rootGroup.All("*", func(c *fiber.Ctx) error {
 		return fiber.ErrNotFound
 	})
 }

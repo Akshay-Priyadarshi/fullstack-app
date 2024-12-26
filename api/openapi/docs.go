@@ -18,7 +18,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/authentication/login": {
+        "/auth/login": {
             "post": {
                 "description": "Login a user",
                 "consumes": [
@@ -38,7 +38,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.AuthenticationLoginRequestData"
+                            "$ref": "#/definitions/dtos.AuthLoginReqData"
                         }
                     }
                 ],
@@ -46,13 +46,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.AuthenticationLoginApiResponse"
+                            "$ref": "#/definitions/dtos.AuthLoginApiRes"
                         }
                     }
                 }
             }
         },
-        "/authentication/register": {
+        "/auth/register": {
             "post": {
                 "description": "Register a new user",
                 "consumes": [
@@ -72,7 +72,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.AuthenticationRegisterRequestData"
+                            "$ref": "#/definitions/dtos.AuthRegisterReqData"
                         }
                     }
                 ],
@@ -80,7 +80,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.AuthenticationRegisterApiResponse"
+                            "$ref": "#/definitions/dtos.AuthRegisterApiRes"
                         }
                     }
                 }
@@ -88,7 +88,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dtos.AuthenticationLoginApiResponse": {
+        "dtos.AuthLoginApiRes": {
             "type": "object",
             "properties": {
                 "additionalInfo": {
@@ -96,7 +96,7 @@ const docTemplate = `{
                     "additionalProperties": true
                 },
                 "data": {
-                    "$ref": "#/definitions/dtos.AuthenticationLoginResponseData"
+                    "$ref": "#/definitions/dtos.AuthResData"
                 },
                 "message": {
                     "type": "string"
@@ -109,32 +109,24 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.AuthenticationLoginRequestData": {
+        "dtos.AuthLoginReqData": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 8
                 }
             }
         },
-        "dtos.AuthenticationLoginResponseData": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.AuthenticationRegisterApiResponse": {
+        "dtos.AuthRegisterApiRes": {
             "type": "object",
             "properties": {
                 "additionalInfo": {
@@ -142,7 +134,7 @@ const docTemplate = `{
                     "additionalProperties": true
                 },
                 "data": {
-                    "$ref": "#/definitions/dtos.AuthenticationRegisterResponseData"
+                    "$ref": "#/definitions/dtos.AuthResData"
                 },
                 "message": {
                     "type": "string"
@@ -155,18 +147,24 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.AuthenticationRegisterRequestData": {
+        "dtos.AuthRegisterReqData": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 8
                 }
             }
         },
-        "dtos.AuthenticationRegisterResponseData": {
+        "dtos.AuthResData": {
             "type": "object",
             "properties": {
                 "email": {

@@ -1,8 +1,9 @@
 package handlers
 
 import (
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/dtos"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models/dtos"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/services"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,35 +13,17 @@ import (
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param user body dtos.AuthenticationRegisterRequestData true "User registration details"
-// @Success 200 {object} dtos.AuthenticationRegisterApiResponse
-// @Router /authentication/register [post]
-func RegisterHandler(c *fiber.Ctx) error {
-	// Create a registerRequestDto to parse the incoming JSON body
-	var registerRequestDto dtos.AuthenticationRegisterRequestData
-
-	if err := c.BodyParser(&registerRequestDto); err != nil {
-		return models.NewApiError("Invalid request body", fiber.StatusBadRequest, nil)
+// @Param user body dtos.AuthRegisterReqData true "User registration details"
+// @Success 200 {object} dtos.AuthRegisterApiRes
+// @Router /auth/register [post]
+func AuthRegisterHandler(c *fiber.Ctx) error {
+	registerReqDto := c.Locals("validatedDto").(*dtos.AuthRegisterReqData)
+	authService := services.AuthService{}
+	registerResDataPtr, err := authService.Register(registerReqDto)
+	if err != nil {
+		return err
 	}
-
-	if err := registerRequestDto.Validate(); err != nil {
-		return models.NewApiError(err.Error(), fiber.StatusBadRequest, nil)
-	}
-
-	user := registerRequestDto.ToUser()
-
-	registerResponseData := dtos.AuthenticationRegisterResponseData{
-		Id:    user.Id,
-		Email: user.Email,
-	}
-
-	// Return the user (ensure sensitive fields like passwords are excluded)
-	apiResponse := models.NewApiResponse(
-		"User created successfully",
-		fiber.StatusOK,
-		&registerResponseData,
-		&map[string]interface{}{},
-	)
+	apiResponse := models.OkApiResponse("User registered successfully", registerResDataPtr)
 	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 }
 
@@ -50,17 +33,16 @@ func RegisterHandler(c *fiber.Ctx) error {
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param user body dtos.AuthenticationLoginRequestData true "User login details"
-// @Success 200 {object} dtos.AuthenticationLoginApiResponse
-// @Router /authentication/login [post]
-func LoginHandler(c *fiber.Ctx) error {
-	// Return login route string
-	loginRoute := "Login route"
-	apiResponse := models.NewApiResponse[string](
-		"Login route",
-		fiber.StatusOK,
-		&loginRoute,
-		&map[string]interface{}{},
-	)
+// @Param user body dtos.AuthLoginReqData true "User login details"
+// @Success 200 {object} dtos.AuthLoginApiRes
+// @Router /auth/login [post]
+func AuthLoginHandler(c *fiber.Ctx) error {
+	loginReqDto := c.Locals("validatedDto").(*dtos.AuthLoginReqData)
+	authService := services.AuthService{}
+	loginResDataPtr, err := authService.Login(loginReqDto)
+	if err != nil {
+		return err
+	}
+	apiResponse := models.OkApiResponse("User logged in successfully", loginResDataPtr)
 	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 }

@@ -5,10 +5,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func RegisterUserRoutes(app fiber.Router) {
-	rootGroup := app.Group("/users")
+func RegisterUserRoutes(app fiber.Router, path string) {
+	rootGroup := app.Group("path")
 
 	rootGroup.Patch("/password", handlers.UserPasswordUpdateHandler)
-
-	RegisterAuthRoutes(rootGroup)
 }
