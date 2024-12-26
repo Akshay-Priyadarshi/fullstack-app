@@ -25,8 +25,8 @@ func MustSubFS(originalFS embed.FS, strippedPath string) fs.FS {
 	return subFS
 }
 
-func RegisterClientRoutes(app *fiber.App) {
-	app.Use("/*", filesystem.New(filesystem.Config{
+func RegisterRoutes(app *fiber.App, path string) {
+	app.Use(path, filesystem.New(filesystem.Config{
 		Root:         http.FS(distFS),
 		Index:        "index.html",
 		NotFoundFile: "index.html",
