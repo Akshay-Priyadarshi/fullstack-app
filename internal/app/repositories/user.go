@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	repositoryerrors "github.com/Akshay-Priyadarshi/fullstack-app/internal/app/repositories/repository_errors"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server"
 )
 
@@ -14,7 +15,7 @@ func (u *UserRepository) Create(user *models.User) error {
 	`
 	_, err := server.AppServer.DB.Exec(query, user.Email, user.Password)
 	if err != nil {
-		return err
+		return repositoryerrors.New(err)
 	}
 	return nil
 }
@@ -28,7 +29,7 @@ func (u *UserRepository) GetByEmail(email string) (*models.User, error) {
 	var user models.User
 	err := server.AppServer.DB.Get(&user, query, email)
 	if err != nil {
-		return nil, err
+		return nil, repositoryerrors.New(err)
 	}
 	return &user, nil
 }
