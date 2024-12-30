@@ -4,6 +4,9 @@ import (
 	"fmt"
 
 	"github.com/Akshay-Priyadarshi/fullstack-app/db/connections"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server/initialisations"
+	ut "github.com/go-playground/universal-translator"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
@@ -21,9 +24,11 @@ type Config struct {
 }
 
 type Server struct {
-	App    *fiber.App
-	DB     *sqlx.DB
-	Config *Config
+	App        *fiber.App
+	DB         *sqlx.DB
+	Config     *Config
+	Translator *ut.Translator
+	Validate   *validator.Validate
 }
 
 func New(app *fiber.App, config *Config) *Server {
@@ -60,6 +65,10 @@ func (s *Server) Configure() {
 
 	// Enable swagger api documentation
 	s.App.Get("/swagger/*", swagger.HandlerDefault)
+
+	// Initialize validator
+	s.Translator = initialisations.InitI18n()
+	s.Validate = initialisations.InitValidation(s.Translator)
 }
 
 var AppServer *Server
