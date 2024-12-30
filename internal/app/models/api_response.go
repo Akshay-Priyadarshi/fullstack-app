@@ -5,9 +5,9 @@ import "github.com/gofiber/fiber/v2"
 type ApiResponse[Data interface{}] struct {
 	Success        bool                    `json:"success"`
 	Message        string                  `json:"message"`
-	Data           *Data                   `json:"data"` // Pointer to make it nullable
+	Data           *Data                   `json:"data"`
 	StatusCode     int                     `json:"statusCode"`
-	AdditionalInfo *map[string]interface{} `json:"additionalInfo"` // Pointer to make it nullable
+	AdditionalInfo *map[string]interface{} `json:"additionalInfo"`
 }
 
 func NewApiResponse[Data interface{}](message string, statusCode int, data *Data, additionalInfo *map[string]interface{}) ApiResponse[Data] {
@@ -15,7 +15,6 @@ func NewApiResponse[Data interface{}](message string, statusCode int, data *Data
 		emptyMap := make(map[string]interface{})
 		additionalInfo = &emptyMap
 	}
-
 	return ApiResponse[Data]{
 		Success:        statusCode >= 200 && statusCode < 300,
 		Message:        message,
@@ -25,6 +24,6 @@ func NewApiResponse[Data interface{}](message string, statusCode int, data *Data
 	}
 }
 
-func OkApiResponse[Data interface{}](message string, data *Data) ApiResponse[Data] {
+func NewOkApiResponse[Data interface{}](message string, data *Data) ApiResponse[Data] {
 	return NewApiResponse(message, fiber.StatusOK, data, &map[string]interface{}{})
 }

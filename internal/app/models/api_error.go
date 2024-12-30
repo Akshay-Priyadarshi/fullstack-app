@@ -23,10 +23,10 @@ func (apiError *ApiError) GetApiResponse() ApiResponse[any] {
 
 func NewApiError(message string, statusCode int, additionalInfo *map[string]interface{}) *ApiError {
 	if statusCode == 0 {
-		statusCode = 500
+		statusCode = fiber.StatusInternalServerError
 	}
 	if message == "" {
-		message = "Internal Server Error"
+		message = fiber.ErrInternalServerError.Message
 	}
 	return &ApiError{
 		Message:        message,
@@ -35,6 +35,12 @@ func NewApiError(message string, statusCode int, additionalInfo *map[string]inte
 	}
 }
 
-func New400ApiError(message string) *ApiError {
+func NewBadRequestError(message string) *ApiError {
 	return NewApiError(message, fiber.StatusBadRequest, nil)
+}
+
+func NewValidationError(message string, problemDetails map[string]string) *ApiError {
+	return NewApiError(message, fiber.StatusUnprocessableEntity, &map[string]interface{}{
+		"problemDetails": problemDetails,
+	})
 }
