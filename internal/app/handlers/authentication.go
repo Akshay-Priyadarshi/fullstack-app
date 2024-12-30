@@ -19,11 +19,11 @@ import (
 func AuthRegisterHandler(c *fiber.Ctx) error {
 	registerReqDto := c.Locals("validatedDto").(*dtos.AuthRegisterReqData)
 	authService := services.AuthService{}
-	registerResDataPtr, err := authService.Register(registerReqDto)
+	authResDataPtr, err := authService.Register(registerReqDto)
 	if err != nil {
-		return err
+		return models.NewBadRequestError(err.Error())
 	}
-	apiResponse := models.OkApiResponse("User registered successfully", registerResDataPtr)
+	apiResponse := models.NewOkApiResponse("user registered successfully", authResDataPtr)
 	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 }
 
@@ -39,10 +39,10 @@ func AuthRegisterHandler(c *fiber.Ctx) error {
 func AuthLoginHandler(c *fiber.Ctx) error {
 	loginReqDto := c.Locals("validatedDto").(*dtos.AuthLoginReqData)
 	authService := services.AuthService{}
-	loginResDataPtr, err := authService.Login(loginReqDto)
+	authResDataPtr, err := authService.Login(loginReqDto)
 	if err != nil {
-		return err
+		return models.NewBadRequestError(err.Error())
 	}
-	apiResponse := models.OkApiResponse("User logged in successfully", loginResDataPtr)
+	apiResponse := models.NewOkApiResponse("user logged in successfully", authResDataPtr)
 	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 }
