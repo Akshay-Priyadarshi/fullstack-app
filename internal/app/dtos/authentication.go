@@ -2,8 +2,8 @@ package dtos
 
 import (
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/pkg/passwords"
-	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 )
 
@@ -14,12 +14,8 @@ type AuthRegisterReqData struct {
 }
 
 func (data *AuthRegisterReqData) Validate() error {
-	validate := validator.New()
-	err := validate.Struct(data)
-	if err != nil {
-		return err
-	}
-	return nil
+	err := server.AppServer.Validate.Struct(data)
+	return err
 }
 
 func (data *AuthRegisterReqData) ToUser() (*models.User, error) {
@@ -52,12 +48,12 @@ type AuthRegisterApiRes struct {
 // Login
 type AuthLoginReqData struct {
 	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=8,max=32"`
+	Password string `json:"password" validate:"required"`
 }
 
 func (data *AuthLoginReqData) Validate() error {
-	validate := validator.New()
-	return validate.Struct(data)
+	err := server.AppServer.Validate.Struct(data)
+	return err
 }
 
 type AuthLoginApiRes struct {
