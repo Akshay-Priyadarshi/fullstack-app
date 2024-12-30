@@ -120,9 +120,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string",
-                    "maxLength": 32,
-                    "minLength": 8
+                    "type": "string"
                 }
             }
         },

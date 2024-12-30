@@ -19,8 +19,6 @@ definitions:
       email:
         type: string
       password:
-        maxLength: 32
-        minLength: 8
         type: string
     required:
     - email
