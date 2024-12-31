@@ -1,9 +1,12 @@
 package jwts
 
-import "fmt"
+import (
+	"errors"
+)
 
-type JwtError error
-
-func NewJwtError(err error) JwtError {
-	return JwtError(fmt.Errorf("jwt error: %w", err))
-}
+var (
+	ErrInvalidToken         = errors.New("invalid token")
+	ErrInvalidSigningMethod = errors.New("invalid signing method")
+	ErrTokenParsingFailed   = errors.New("token parsing failed")
+	ErrSigningFailed        = errors.New("signing failed")
+)

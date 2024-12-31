@@ -1,42 +1,44 @@
 package jwts
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 func GenerateJWT(sub string, exp time.Duration, secretString string) (string, error) {
-	secretKey := []byte(secretString)
+	secret := []byte(secretString)
 	claims := jwt.MapClaims{
 		"sub": sub,
 		"exp": time.Now().Add(exp).Unix(),
 		"iat": time.Now().Unix(),
+		"alg": "HS256",
+		"iss": "fullstack.app",
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(secretKey))
+	signedToken, err := token.SignedString(secret)
 	if err != nil {
-		return "", NewJwtError(fmt.Errorf("signing failed :%w", err))
+		return "", ErrSigningFailed
 	}
-	return tokenString, nil
+	return signedToken, nil
 }
 
-func VerifyJWT(tokenString string, secretString string) (jwt.MapClaims, error) {
+func VerifyJWT(signedToken string, secretString string) (jwt.MapClaims, error) {
+	secret := []byte(secretString)
 	token, err := jwt.Parse(
-		tokenString,
+		signedToken,
 		func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, NewJwtError(fmt.Errorf("invalid signing method"))
+				return nil, ErrInvalidSigningMethod
 			}
-			return secretString, nil
+			return secret, nil
 		},
 	)
 	if err != nil {
-		return nil, NewJwtError(fmt.Errorf("token parsing failed: %w", err))
+		return nil, ErrTokenParsingFailed
 	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, NewJwtError(fmt.Errorf("invalid token"))
+	return nil, ErrInvalidToken
 }

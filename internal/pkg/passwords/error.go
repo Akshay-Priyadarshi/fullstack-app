@@ -1,9 +1,10 @@
 package passwords
 
-import "fmt"
+import (
+	"errors"
+)
 
-type PasswordError error
-
-func NewPasswordError(err error) PasswordError {
-	return PasswordError(fmt.Errorf("password error: %w", err))
-}
+var (
+	ErrPasswordMismatch = errors.New("passwords do not match")
+	ErrHashingFailed    = errors.New("password hashing failed")
+)
