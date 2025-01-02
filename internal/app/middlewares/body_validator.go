@@ -1,25 +1,27 @@
 package middlewares
 
 import (
+	"fmt"
 	"reflect"
+	"strings"
 
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/dtos/abstractions"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/responses"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server"
-	serviceerrors "github.com/Akshay-Priyadarshi/fullstack-app/internal/app/services/service_errors"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/services"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
-func ReqBodyValidator[T any]() fiber.Handler {
+func BodyValidator[T any]() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var dto T
 		err := c.BodyParser(&dto)
 		if err != nil {
-			return models.NewBadRequestError("invalid request body")
+			return services.New400ServiceError(err, "failed to parse request body")
 		}
 		if validatable, ok := any(&dto).(abstractions.Validatable); ok {
-			problemDetails := make(map[string]string)
+			problemDetails := make(map[string]interface{})
 			if err := validatable.Validate(); err != nil {
 				if validationErrors, ok := err.(validator.ValidationErrors); ok {
 					dtoType := reflect.TypeOf(dto)
@@ -37,10 +39,17 @@ func ReqBodyValidator[T any]() fiber.Handler {
 								}
 							}
 						}
-						problemDetails[invalidFieldName] = fieldErr.Translate(*server.AppServer.Translator)
+						problemDetails[invalidFieldName] = strings.ToLower(fieldErr.Translate(*server.AppServer.Translator))
+						fmt.Println(problemDetails)
 					}
 				}
-				validationApiError := models.NewValidationError(serviceerrors.ErrValidationFailed.Error(), problemDetails)
+				var problem responses.Problem = responses.Problem{
+					Type:    responses.ProblemTypeValidation,
+					Details: problemDetails,
+				}
+				additionalInfo := make(map[string]interface{})
+				additionalInfo["problem"] = problem
+				validationApiError := services.New422ServiceError(err, "validation failed", &additionalInfo)
 				return validationApiError
 			}
 		}
