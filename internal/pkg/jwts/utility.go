@@ -17,7 +17,7 @@ func GenerateJWT(sub string, exp time.Duration, secretString string) (string, er
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(secret)
 	if err != nil {
-		return "", ErrSigningFailed
+		return "", err
 	}
 	return signedToken, nil
 }
@@ -34,7 +34,7 @@ func VerifyJWT(signedToken string, secretString string) (jwt.MapClaims, error) {
 		},
 	)
 	if err != nil {
-		return nil, ErrTokenParsingFailed
+		return nil, err
 	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims, nil
