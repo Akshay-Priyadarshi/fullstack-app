@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
 	_ "github.com/Akshay-Priyadarshi/fullstack-app/api/openapi"
@@ -29,16 +30,20 @@ func main() {
 	fiberApp := fiber.New(fiber.Config{
 		JSONEncoder:  json.Marshal,
 		JSONDecoder:  json.Unmarshal,
-		ErrorHandler: handlers.ErrorHandler,
+		ErrorHandler: handlers.HandleError,
 	})
 
-	server.AppServer = server.New(fiberApp, &server.Config{
+	appConfig := server.Config{
 		Port:      os.Getenv("PORT"),
 		DBString:  os.Getenv("DB_CONN_STRING"),
 		ApiPath:   os.Getenv("API_PATH"),
 		WebPath:   os.Getenv("WEB_PATH"),
 		JwtSecret: os.Getenv("JWT_SECRET"),
-	})
+	}
+	jsonConfig, _ := appConfig.GetJson()
+	fmt.Printf("Application Configuration:\n%s\n", jsonConfig)
+
+	server.AppServer = server.New(fiberApp, &appConfig)
 
 	// Register api routes
 	routes.RegisterRoutes(server.AppServer.App, server.AppServer.Config.ApiPath)

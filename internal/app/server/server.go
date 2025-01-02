@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/Akshay-Priyadarshi/fullstack-app/db/connections"
@@ -16,11 +17,19 @@ import (
 )
 
 type Config struct {
-	Port      string
-	DBString  string
-	ApiPath   string
-	WebPath   string
-	JwtSecret string
+	Port      string `json:"port"`
+	DBString  string `json:"dbString"`
+	ApiPath   string `json:"apiPath"`
+	WebPath   string `json:"webPath"`
+	JwtSecret string `json:"jwtSecret"`
+}
+
+func (c *Config) GetJson() (string, error) {
+	jsonConfig, err := json.MarshalIndent(c, "", "  ")
+	if err != nil {
+		return "", fmt.Errorf("error marshaling config to json: %w", err)
+	}
+	return string(jsonConfig), nil
 }
 
 type Server struct {
