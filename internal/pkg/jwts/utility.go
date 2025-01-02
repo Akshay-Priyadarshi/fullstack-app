@@ -12,7 +12,6 @@ func GenerateJWT(sub string, exp time.Duration, secretString string) (string, er
 		"sub": sub,
 		"exp": time.Now().Add(exp).Unix(),
 		"iat": time.Now().Unix(),
-		"alg": "HS256",
 		"iss": "fullstack.app",
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
