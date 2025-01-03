@@ -1,8 +1,9 @@
 package abstractions
 
-import "github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+import "github.com/Akshay-Priyadarshi/fullstack-app/internal/app/dtos"
 
 type IUserService interface {
-	Create(user *models.User) error
-	GetByEmail(email string) (*models.User, error)
+	UpdatePassword(userPasswordUpdateDto *dtos.UserPasswordUpdateReqData) (*dtos.UserResData, error)
+
+	GetById(id string) (*dtos.UserResData, error)
 }
