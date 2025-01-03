@@ -1,8 +1,8 @@
 package server
 
 import (
-	"encoding/json"
 	"fmt"
+	"log/slog"
 
 	"github.com/Akshay-Priyadarshi/fullstack-app/db/connections"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server/initialisations"
@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
-	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/swagger"
 	"github.com/jmoiron/sqlx"
 )
@@ -22,35 +22,30 @@ type Config struct {
 	ApiPath   string `json:"apiPath"`
 	WebPath   string `json:"webPath"`
 	JwtSecret string `json:"jwtSecret"`
-}
-
-func (c *Config) GetJson() (string, error) {
-	jsonConfig, err := json.MarshalIndent(c, "", "  ")
-	if err != nil {
-		return "", fmt.Errorf("error marshaling config to json: %w", err)
-	}
-	return string(jsonConfig), nil
+	Env       string `json:"env"`
 }
 
 type Server struct {
 	App        *fiber.App
-	DB         *sqlx.DB
 	Config     *Config
+	DB         *sqlx.DB
+	Logger     *slog.Logger
 	Translator *ut.Translator
 	Validate   *validator.Validate
 }
 
-func New(app *fiber.App, config *Config) *Server {
+func New(app *fiber.App, config *Config, logger *slog.Logger) *Server {
+	slog.Debug("Application configuration", "config", config)
 	return &Server{
 		App:    app,
-		DB:     connections.InitializeDB(config.DBString),
 		Config: config,
+		DB:     connections.InitializeDB(config.DBString),
+		Logger: logger,
 	}
 }
 
 func (s *Server) Start() error {
-	s.Configure()
-	println("Server is starting at: http://localhost:" + s.Config.Port)
+	slog.Info("Server is starting at: http://localhost:" + s.Config.Port)
 	if err := s.App.Listen(fmt.Sprintf(":%s", s.Config.Port)); err != nil {
 		return err
 	}
@@ -58,6 +53,12 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) Configure() {
+	// Register recover middleware
+	s.App.Use(recover.New())
+
+	// Initialisations
+	s.Translator = initialisations.InitI18n()
+	s.Validate = initialisations.InitValidation(s.Translator)
 
 	// Enable CORS
 	s.App.Use(cors.New(cors.Config{
@@ -67,17 +68,8 @@ func (s *Server) Configure() {
 	// Enable security headers
 	s.App.Use(helmet.New())
 
-	// Enable logging
-	s.App.Use(logger.New(logger.Config{
-		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
-	}))
-
 	// Enable swagger api documentation
 	s.App.Get("/swagger/*", swagger.HandlerDefault)
-
-	// Initialize validator
-	s.Translator = initialisations.InitI18n()
-	s.Validate = initialisations.InitValidation(s.Translator)
 }
 
 var AppServer *Server

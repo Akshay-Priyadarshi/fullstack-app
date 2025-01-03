@@ -2,20 +2,28 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"flag"
 	"os"
 
 	_ "github.com/Akshay-Priyadarshi/fullstack-app/api/openapi"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/constants"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/handlers"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/routes"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server/initialisations"
 	"github.com/Akshay-Priyadarshi/fullstack-app/web"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 )
 
 func init() {
-	godotenv.Load(".env")
+	GoEnvFromEnvironment := os.Getenv("GO_ENV")
+	if GoEnvFromEnvironment == "" {
+		os.Setenv("GO_ENV", constants.EnvProduction)
+	}
+	if GoEnvFromEnvironment == constants.EnvDevelopment {
+		godotenv.Load(".env")
+	}
 }
 
 // @title Api Template
@@ -27,23 +35,28 @@ func init() {
 // @produce json
 // @consumes json
 func main() {
+	env := flag.String("env", os.Getenv("GO_ENV"), "Set the environment (development, staging, production)")
+	flag.Parse()
+	logger := initialisations.InitLogger(*env)
+
 	fiberApp := fiber.New(fiber.Config{
 		JSONEncoder:  json.Marshal,
 		JSONDecoder:  json.Unmarshal,
 		ErrorHandler: handlers.HandleError,
 	})
 
-	appConfig := server.Config{
+	appConfig := &server.Config{
 		Port:      os.Getenv("PORT"),
 		DBString:  os.Getenv("DB_CONN_STRING"),
 		ApiPath:   os.Getenv("API_PATH"),
 		WebPath:   os.Getenv("WEB_PATH"),
 		JwtSecret: os.Getenv("JWT_SECRET"),
+		Env:       *env,
 	}
-	jsonConfig, _ := appConfig.GetJson()
-	fmt.Printf("Application Configuration:\n%s\n", jsonConfig)
 
-	server.AppServer = server.New(fiberApp, &appConfig)
+	server.AppServer = server.New(fiberApp, appConfig, logger)
+
+	server.AppServer.Configure()
 
 	// Register api routes
 	routes.RegisterRoutes(server.AppServer.App, server.AppServer.Config.ApiPath)

@@ -1,7 +1,7 @@
 package connections
 
 import (
-	"log"
+	"log/slog"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -16,6 +16,6 @@ func InitializeDB(POSTGRES_URL string) *sqlx.DB {
 	if err != nil {
 		panic(err)
 	}
-	log.Println("Connected to PostgreSQL!")
+	slog.Info("Connected to PostgreSQL!")
 	return DbPtr
 }

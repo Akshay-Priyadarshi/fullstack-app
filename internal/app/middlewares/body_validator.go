@@ -1,7 +1,7 @@
 package middlewares
 
 import (
-	"fmt"
+	"log/slog"
 	"reflect"
 	"strings"
 
@@ -40,7 +40,7 @@ func BodyValidator[T any]() fiber.Handler {
 							}
 						}
 						problemDetails[invalidFieldName] = strings.ToLower(fieldErr.Translate(*server.AppServer.Translator))
-						fmt.Println(problemDetails)
+						slog.Info("Logging Problem Details", "problemDetails", problemDetails)
 					}
 				}
 				var problem responses.Problem = responses.Problem{
