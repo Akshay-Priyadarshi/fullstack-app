@@ -10,7 +10,15 @@ import (
 func RegisterAuthRoutes(rootRouter fiber.Router, path string) {
 	authGroup := rootRouter.Group("/auth")
 
-	authGroup.Post("/login", middlewares.ReqBodyValidator[dtos.AuthLoginReqData](), handlers.AuthLoginHandler)
+	authGroup.Post(
+		"/login",
+		middlewares.BodyValidator[*dtos.AuthLoginReqData](),
+		handlers.HandleAuthLogin,
+	)
 
-	authGroup.Post("/register", middlewares.ReqBodyValidator[dtos.AuthRegisterReqData](), handlers.AuthRegisterHandler)
+	authGroup.Post(
+		"/register",
+		middlewares.BodyValidator[*dtos.AuthRegisterReqData](),
+		handlers.HandleAuthRegister,
+	)
 }
