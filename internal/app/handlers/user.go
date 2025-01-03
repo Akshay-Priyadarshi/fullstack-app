@@ -1,45 +1,37 @@
 package handlers
 
 import (
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models/dtos"
-	"github.com/Akshay-Priyadarshi/fullstack-app/pkg/passwords"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/dtos"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/responses"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/services"
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
-func UserPasswordUpdateHandler(c *fiber.Ctx) error {
-	var userPasswordUpdateRequestData dtos.UserPasswordUpdateRequestData
-
-	if err := c.BodyParser(&userPasswordUpdateRequestData); err != nil {
-		return models.NewApiError("Invalid request body", fiber.StatusBadRequest, nil)
+func HandleUserPasswordUpdate(c *fiber.Ctx) error {
+	authUser := c.Locals("authUser").(*dtos.UserResData)
+	passwordUpdateReqDto := c.Locals("validatedDto").(*dtos.UserPasswordUpdateReqData)
+	userService := services.UserService{}
+	userResData, err := userService.UpdatePassword(authUser.Id, passwordUpdateReqDto)
+	if err != nil {
+		return err
 	}
-
-	if err := userPasswordUpdateRequestData.Validate(); err != nil {
-		return models.NewApiError(err.Error(), fiber.StatusBadRequest, nil)
-	}
-
-	hash, _ := passwords.HashPassword("password")
-	loggedInUser := models.User{
-		Identity: models.Identity[uuid.UUID]{Id: uuid.New()},
-		Email:    "akshay@gmail.com",
-		Password: hash,
-	}
-
-	if err := loggedInUser.UpdatePassword(userPasswordUpdateRequestData.OldPassword, userPasswordUpdateRequestData.NewPassword); err != nil {
-		return models.NewApiError(err.Error(), fiber.StatusBadRequest, nil)
-	}
-
-	userResponseData := dtos.UserResponseData{
-		Id:    loggedInUser.Identity.Id.String(),
-		Email: loggedInUser.Email,
-	}
-
-	apiResponse := models.NewApiResponse[dtos.UserResponseData](
+	apiResponse := responses.NewOkResponse(
 		"password updated successfully",
-		fiber.StatusOK,
-		&userResponseData,
-		nil,
+		userResData,
+	)
+	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
+}
+
+func HandleUserGetById(c *fiber.Ctx) error {
+	userId := c.Params("id")
+	userService := services.UserService{}
+	userResData, err := userService.GetById(userId)
+	if err != nil {
+		return err
+	}
+	apiResponse := responses.NewOkResponse(
+		"user fetched successfully",
+		userResData,
 	)
 	return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 }

@@ -29,3 +29,6 @@ go.work.sum
 
 # distributable
 dist
+
+# Mac
+.DS_Store

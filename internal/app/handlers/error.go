@@ -1,26 +1,28 @@
 package handlers
 
 import (
-	"log"
+	"errors"
+	"log/slog"
 
-	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/models"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/responses"
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/services"
 	"github.com/gofiber/fiber/v2"
 )
 
-func ErrorHandler(c *fiber.Ctx, err error) error {
-	log.Printf("Error: %v", err)
-
-	if apiError, ok := err.(*models.ApiError); ok {
-		apiErrorServerResponse := apiError.GetApiResponse()
-		return c.Status(apiErrorServerResponse.StatusCode).JSON(apiErrorServerResponse)
+func HandleError(c *fiber.Ctx, err error) error {
+	slog.Error(err.Error())
+	var serviceError *services.ServiceError
+	var fiberError *fiber.Error
+	switch {
+	case errors.As(err, &serviceError):
+		apiResponse := serviceError.ToApiResponse()
+		return c.Status(apiResponse.StatusCode).JSON(apiResponse)
+	case errors.As(err, &fiberError):
+		apiResponse := responses.NewResponse[any](fiberError.Message, fiberError.Code, nil, nil)
+		return c.Status(apiResponse.StatusCode).JSON(apiResponse)
+	default:
+		defaultError := services.New500ServiceError(nil)
+		apiResponse := defaultError.ToApiResponse()
+		return c.Status(apiResponse.StatusCode).JSON(apiResponse)
 	}
-
-	if fiberError, ok := err.(*fiber.Error); ok {
-		fiberErrorServerResponse := models.NewApiResponse[any](fiberError.Message, fiberError.Code, nil, nil)
-		return c.Status(fiberErrorServerResponse.StatusCode).JSON(fiberErrorServerResponse)
-	}
-
-	defaultError := models.NewApiError("Internal Server Error", fiber.StatusInternalServerError, nil)
-	defaultErrorApiResponse := defaultError.GetApiResponse()
-	return c.Status(defaultErrorApiResponse.StatusCode).JSON(defaultErrorApiResponse)
 }

@@ -16,7 +16,7 @@ vet:
 # ------------------------------------------------------------------------------------------
 ### Generate swagger docs for the app ###
 swagger: deps
-	swag init -g main.go -o api/openapi -d cmd/app,internal/app/handlers,internal/app/models,internal/app/models/dtos
+	swag init -g main.go -o api/openapi -d cmd/app,internal/app/handlers,internal/app/models,internal/app/dtos
 
 ### Run in development mode ###
 dev: swagger
@@ -48,3 +48,13 @@ coverage:
 	go test ./... -coverprofile=coverage.out
 
 # ------------------------------------------------------------------------------------------
+### Database Related
+migration_create:
+	@[ -n "$(name)" ] || (echo "Error: Migration name is required. Usage: make migration_create name=<migration_name>" && exit 1)
+	goose create $(name) sql --dir db/migrations
+
+migration_up:
+	goose up --dir db/migrations --env .env
+
+migration_down:
+	goose down --dir db/migrations --env .env
