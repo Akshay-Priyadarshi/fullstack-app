@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/constants"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/dtos/abstractions"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/responses"
 	"github.com/Akshay-Priyadarshi/fullstack-app/internal/app/server"
@@ -44,7 +45,7 @@ func BodyValidator[T any]() fiber.Handler {
 					}
 				}
 				var problem responses.Problem = responses.Problem{
-					Type:    responses.ProblemTypeValidation,
+					Type:    constants.ProblemTypeValidation,
 					Details: problemDetails,
 				}
 				additionalInfo := make(map[string]interface{})
